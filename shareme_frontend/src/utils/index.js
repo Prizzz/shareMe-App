@@ -15,3 +15,9 @@ export const createOrGetUser = (response) => {
 
   return doc;
 };
+
+export const userQuery = (userId) => {
+  const query = `*[_type == "user" && _id == '${userId}']`;
+
+  return query;
+};

@@ -5,7 +5,7 @@ import { Link, Route, Routes } from 'react-router-dom';
 
 import { Sidebar, UserProfile } from '../components';
 import Pins from './Pins';
-import { userQuery } from '../utils';
+import { fetchUser, userQuery } from '../utils';
 import { client } from '../client';
 import logo from '../assets/logo.png';
 
@@ -14,15 +14,12 @@ const Home = () => {
   const [user, setUser] = useState(null);
   const scrollRef = useRef(null);
 
-  const userInfo =
-    localStorage.getItem('user') !== 'underfind'
-      ? JSON.parse(localStorage.getItem('user'))
-      : localStorage.clear();
+  const userInfo = fetchUser();
 
   useEffect(() => {
     const query = userQuery(userInfo?.sub);
     client.fetch(query).then((data) => setUser(data[0]));
-  }, []);
+  });
 
   useEffect(() => {
     scrollRef.current.scrollTo(0, 0);

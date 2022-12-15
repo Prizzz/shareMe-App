@@ -22,6 +22,7 @@ const Feed = () => {
         setLoading(false);
       });
     } else {
+      console.log(1);
       client.fetch(feedQuery).then((data) => {
         setPins(data);
         setLoading(false);

@@ -101,7 +101,7 @@ const Pin = ({ pin }) => {
                   className="bg-white flex items-center gap-2 text-black font-bold p-1 pl-2 pr-2 rounded-full opacity-70 hover:opacity-100 hover:shadow-md"
                 >
                   <BsFillArrowUpRightCircleFill />
-                  {destination.length > 20 ? destination.slice(8, 20) : destination.slice(8)}
+                  {destination.length > 20 ? `${destination.slice(0, 20)}...` : destination}
                 </a>
               )}
               {postedBy?._id === user.sub && (

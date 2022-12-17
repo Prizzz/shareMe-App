@@ -57,6 +57,7 @@ const CreatePin = ({ user }) => {
       type === 'image/svg' ||
       type === 'image/jpg' ||
       type === 'image/gif' ||
+      type === 'image/jpeg' ||
       type === 'image/tiff'
     ) {
       setWrongImageType(false);
@@ -72,6 +73,7 @@ const CreatePin = ({ user }) => {
           console.log('Image upload error ', err);
         });
     } else {
+      console.log(type);
       setWrongImageType(true);
     }
   };
@@ -160,6 +162,7 @@ const CreatePin = ({ user }) => {
                   <option
                     className="text-base border-0 outline-none capitalize bg-white text-black"
                     value={category.name}
+                    key={category.name}
                   >
                     {category.name}
                   </option>

@@ -10,7 +10,6 @@ import { fetchUser } from '../utils';
 
 const Pin = ({ pin }) => {
   const [postHovered, setPostHovered] = useState(false);
-  const [savingPost, setSavingPost] = useState(false);
   const navigate = useNavigate();
 
   const { postedBy, image, _id, destination } = pin;
@@ -22,8 +21,6 @@ const Pin = ({ pin }) => {
 
   const savePin = (id) => {
     if (alreadySaved?.length === 0) {
-      setSavingPost(true);
-
       client
         .patch(id)
         .setIfMissing({ save: [] })
@@ -40,9 +37,14 @@ const Pin = ({ pin }) => {
         .commit()
         .then(() => {
           window.location.reload();
-          setSavingPost(false);
         });
     }
+  };
+
+  const deletePin = (id) => {
+    client.delete(id).then(() => {
+      window.location.reload();
+    });
   };
 
   return (
@@ -51,7 +53,7 @@ const Pin = ({ pin }) => {
         className="relative cursor-zoom-in w-auto hover:shadow-lg rounded-lg overflow-hidden transition-all duration-500 ease-in-out"
         onMouseEnter={() => setPostHovered(true)}
         onMouseLeave={() => setPostHovered(false)}
-        onClick={() => console.log(alreadySaved) /*navigate(`/pin-detail/${_id}`)*/}
+        onClick={() => navigate(`/pin-detail/${_id}`)}
       >
         <img src={urlFor(image).width(250).url()} alt="user-post" className="rounded-lg w-full" />
         {postHovered && (
@@ -73,7 +75,7 @@ const Pin = ({ pin }) => {
               {alreadySaved?.length ? (
                 <button
                   type="button"
-                  className="bg-red-500 opacity-70 hover:opacity-100 text-white font-bold px-5 py-1 text-base rounded-3xl hover:shadow-md outlined-none"
+                  className="bg-red-500 opacity-70 hover:opacity-100 text-white font-bold px-3 py-1 text-base rounded-3xl hover:shadow-md outlined-none"
                 >
                   {pin?.save?.length} Saved
                 </button>
@@ -84,15 +86,48 @@ const Pin = ({ pin }) => {
                     savePin(_id);
                   }}
                   type="button"
-                  className="bg-red-500 opacity-70 hover:opacity-100 text-white font-bold px-5 py-1 text-base rounded-3xl hover:shadow-md outlined-none"
+                  className="bg-red-500 opacity-70 hover:opacity-100 text-white font-bold px-3 py-1 text-base rounded-3xl hover:shadow-md outlined-none"
                 >
                   Save
+                </button>
+              )}
+            </div>
+            <div className="flex justify-between items-center gap-2 w-full">
+              {destination && (
+                <a
+                  href={destination}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="bg-white flex items-center gap-2 text-black font-bold p-1 pl-2 pr-2 rounded-full opacity-70 hover:opacity-100 hover:shadow-md"
+                >
+                  <BsFillArrowUpRightCircleFill />
+                  {destination.length > 20 ? destination.slice(8, 20) : destination.slice(8)}
+                </a>
+              )}
+              {postedBy?._id === user.sub && (
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    deletePin(_id);
+                  }}
+                  className="bg-white p-2 opacity-70 hover:opacity-100 font-bold text-dark text-base rounded-3xl hover:shadow-md outlined-none"
+                >
+                  <AiTwotoneDelete />
                 </button>
               )}
             </div>
           </div>
         )}
       </div>
+      <Link to={`user-profile/${postedBy?._id}`} className="flex gap-2 mt-2 items-center">
+        <img
+          src={postedBy?.image}
+          alt="user-profile"
+          className="w-8 h-8 rounded-full object-cover"
+        />
+        <p className="relative t-2 font-semibold capitalize">{postedBy?.userName}</p>
+      </Link>
     </div>
   );
 };

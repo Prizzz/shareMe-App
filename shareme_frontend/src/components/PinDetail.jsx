@@ -126,11 +126,7 @@ const PinDetail = ({ user }) => {
             ))}
           </div>
           <div className="flex flex-wrap items-center mt-6 gap-3">
-            <img
-              src={user.image}
-              alt="user-profile"
-              className="w-10 h-10 rounded-full cursor-pointer"
-            />
+            <img src={user.image} alt="user-profile" className="w-10 h-10 rounded-full" />
             <input
               type="text"
               className="flex-1 border-gray-100 outline-none border-2 p-2 rounded-2xl focus:border-gray-300"

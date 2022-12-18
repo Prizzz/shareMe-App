@@ -41,6 +41,18 @@ const Pin = ({ pin }) => {
     }
   };
 
+  const deleteSavedPin = (id) => {
+    const pinToRemove = ['save[-1]', `save[_key=="${alreadySaved[0]._key}"]`];
+
+    client
+      .patch(id)
+      .unset(pinToRemove)
+      .commit()
+      .then(() => {
+        window.location.reload();
+      });
+  };
+
   const deletePin = (id) => {
     client.delete(id).then(() => {
       window.location.reload();
@@ -76,6 +88,10 @@ const Pin = ({ pin }) => {
                 <button
                   type="button"
                   className="bg-red-500 opacity-70 hover:opacity-100 text-white font-bold px-3 py-1 text-base rounded-3xl hover:shadow-md outlined-none"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    deleteSavedPin(_id);
+                  }}
                 >
                   {pin?.save?.length} Saved
                 </button>

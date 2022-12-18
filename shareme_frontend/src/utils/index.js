@@ -22,6 +22,8 @@ export const fetchUser = () => {
       ? JSON.parse(localStorage.getItem('user'))
       : localStorage.clear();
 
+  console.log(userInfo);
+
   return userInfo;
 };
 

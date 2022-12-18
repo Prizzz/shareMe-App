@@ -3,7 +3,7 @@ import { AiOutlineLogout } from 'react-icons/ai';
 import { useParams, useNavigate } from 'react-router-dom';
 import { googleLogout } from '@react-oauth/google';
 
-import { userCreatedPinsQuery, userQuery, userSavedPinsQuery } from '../utils';
+import { fetchUser, userCreatedPinsQuery, userQuery, userSavedPinsQuery } from '../utils';
 import { client } from '../client';
 import MasonryLayout from './MasonryLayout';
 import Spinner from './Spinner';
@@ -21,6 +21,8 @@ const UserProfile = () => {
   const [activeBtn, setActiveBtn] = useState('created');
   const navigate = useNavigate();
   const { userId } = useParams();
+
+  const mainUser = fetchUser();
 
   useEffect(() => {
     const query = userQuery(userId);
@@ -67,7 +69,7 @@ const UserProfile = () => {
             />
             <h1 className="font-bold text-3xl text-center mt-3">{user.userName}</h1>
             <div className="absolute top-0 z-1 right-0 p-2">
-              {userId === user._id && (
+              {userId === mainUser.sub && (
                 <button
                   type="button"
                   className="bg-white p-2 rounded-full cursor-pointer outline-none shadow-md"
